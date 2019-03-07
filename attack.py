@@ -10,6 +10,9 @@ class Attack(object):
     def __str__(self):
         return f'source: {self.source} --> target: {self.target}'
 
+    def __hash__(self):
+        return hash((self.source, self.target))
+
     def target_after_attack(self):
         raise NotImplementedError
 
@@ -27,6 +30,12 @@ class WarriorAttack(Attack):
 
     def __init__(self, source, target):
         super().__init__(source, target)
+
+    def __eq__(self, other):
+        return isinstance(other, Card) and self.source == other.source and self.target == other.target
+
+    def __hash__(self):
+        return hash((self.source, self.target))
 
     def target_after_attack(self):
         if self.target_dies():
@@ -46,3 +55,9 @@ class PlayerAttack(Attack):
 
     def __init__(self, source, target):
         super().__init__(source, target)
+
+    def __hash__(self):
+        return hash((self.source, self.target))
+
+    def __eq__(self, other):
+        return isinstance(other, PlayerAttack) and self.source == other.source and self.target == other.target

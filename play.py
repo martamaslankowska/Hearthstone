@@ -4,7 +4,7 @@ from greedy_players import RandomPlayer
 import random
 
 if __name__ == '__main__':
-    random.seed(5)
+    random.seed(17)
 
     player1 = RandomPlayer("Player 1")
     player2 = RandomPlayer("Player 2")

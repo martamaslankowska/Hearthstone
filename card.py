@@ -18,6 +18,8 @@ class Card(object):
         return isinstance(o, Card) and o.name == self.name and o.mana == self.mana \
                and o.attack == self.attack and o.hp == self.hp
 
+    def __hash__(self):
+        return hash((self.name, self.mana, self.attack, self.hp))
 
 CARDS = [Card('Arcanite Reaper', 5, 5, 2), Card('Bloodfen Raptor', 2, 3, 2), Card('Boulderfist Ogre', 6, 6, 7),
          Card('Chillwind Yeti', 4, 4, 5), Card('Core Hound', 7, 9, 5), Card('Fiery War Axe', 3, 3, 2),

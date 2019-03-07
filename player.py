@@ -26,6 +26,8 @@ class Player(object):
     def __eq__(self, other):
         return isinstance(other, Player) and other.name == self.name and other.hp == self.hp
 
+    def __hash__(self):
+        return hash((self.name, self.hp))
 
     def prepare_deck(self):
         deck = copy.deepcopy(card.CARDS) + copy.deepcopy(card.CARDS)
