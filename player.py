@@ -17,6 +17,21 @@ class Player(object):
         self.warriors = []
         self.punishment = 0
 
+    def __str__(self):
+        return f'{self.name} - {self.hp} hp'
+
+    def __eq__(self, other):
+        return isinstance(object, Player) and object.name == self.name and object.hp == self.hp
+
+    # def __eq__(self, o: object):
+    #     # return isinstance(object, Player) and object.name == self.name and object.hp == self.hp
+    #     return self.__dict__ == object.__dict__
+
+    def __cmp__(self, other):
+        return isinstance(other, Player) and other.name == self.name and other.hp == self.hp
+
+
+
     def prepare_deck(self):
         deck = copy.deepcopy(card.CARDS) + copy.deepcopy(card.CARDS)
         random.shuffle(deck)
@@ -30,11 +45,17 @@ class Player(object):
             self.punishment += 1
             self.hp -= self.punishment
 
-    def move(self, opponent):
+    def move(self, opponent, possible_cards_to_play, possible_attacks):
         raise NotImplementedError()
 
+    def get_possible_moves(self, opponent):
+        cards_to_play = self.get_possible_cards_to_play()
+        attacks = self.get_possible_attacks(opponent)
+        return cards_to_play, attacks
+
     def get_possible_attacks(self, opponent):
-        return self.get_attacks_from(copy.deepcopy(self.warriors), copy.deepcopy(opponent.warriors))
+        attacks_with_duplicates = self.get_attacks_from(copy.deepcopy(self.warriors), copy.deepcopy(opponent.warriors))
+        return list(set([tuple(attacks_sequence) for attacks_sequence in attacks_with_duplicates]))
 
     def get_attacks_from(self, attacking_warriors, opponents_warriors, opponent):
         if len(attacking_warriors) == 0:
@@ -62,3 +83,9 @@ class Player(object):
 
         return [x for x in subsets(self.hand)
                 if sum(card.mana for card in x) <= self.mana]
+
+    def attack_opponent(self, chosen_attack):
+        pass
+
+    def play_cards(self, chosen_cards_to_play):
+        pass

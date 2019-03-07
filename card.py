@@ -7,7 +7,11 @@ class Card(object):
         self.hp = health
 
     def __str__(self):
-        return f'{{name = {self.name}, mana = {self.mana}, attack = {self.attack}, hp = {self.hp}}}'
+        return f'{self.name} ({self.mana}) - {self.attack} att | {self.hp} hp'
+
+    def __eq__(self, o: object):
+        return isinstance(object, Card) and object.name == self.name and object.mana == self.mana \
+               and object.attack == self.attack and object.hp == self.hp
 
 
 CARDS = [Card('Arcanite Reaper', 5, 5, 2), Card('Bloodfen Raptor', 2, 3, 2), Card('Boulderfist Ogre', 6, 6, 7),

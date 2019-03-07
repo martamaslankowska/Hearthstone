@@ -8,7 +8,7 @@ class Attack(object):
         self.target = target
 
     def __str__(self):
-        return f'{{source = {self.source}, target = {self.target}}}'
+        return f'source: {self.source} --> target: {self.target}'
 
 
 class WarriorAttack(Attack):

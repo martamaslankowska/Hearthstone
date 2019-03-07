@@ -17,14 +17,20 @@ class Game(object):
         self.active_player.deck = self.active_player.deck[3:]
         self.inactive_player.hand = self.inactive_player.deck[:4]
         self.inactive_player.deck = self.inactive_player.deck[4:]
+        print(f'{self.active_player} has 3 cards and {self.inactive_player} has 4 cards in hand.')
 
     def game_play(self):
+        print(f'{self.active_player.name} starts the game.')
+        self.prepare_game()
         while not self.finished():  # active player move
             self.move += 1
             self.active_player.mana = min((self.move+1)/2, 10)
             self.active_player.hit()
-            self.active_player.move(self.inactive_player)
+            print(f'\nTime for {self.active_player.name} to move... (mana: {self.active_player.mana})')
+            cards, attacks = self.active_player.get_possible_moves(self.inactive_player)
+            self.active_player.move(self.inactive_player, cards, attacks)
             self.swap_players()
+        print(f'\n{self.winner().name} WINS THE GAME :)\n')
         return self.winner()
 
     def finished(self):

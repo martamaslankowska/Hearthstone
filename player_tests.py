@@ -43,8 +43,26 @@ class PlayerTests(unittest.TestCase):
         opponents = [Card('Oasis Snapjaw', 4, 2, 7), Card('Bloodfen Raptor', 2, 3, 2)]
 
         attacks = player.get_attacks_from(attacking, opponents, opponent_player)
+        attacks_without_duplicates = list(set([tuple(attacks_sequence) for attacks_sequence in attacks]))
 
         self.assertTrue(True)
+
+
+    def test_check_equality(self):
+        player1 = Player("Test Player")
+        player1.prepare_deck()
+        player2 = Player("Test Player")
+        player2.prepare_deck()
+
+        print(player1)
+        print(player2)
+        eq = player1.__eq__(player2)
+        cmp = player1.__cmp__(player2)
+        grrr = player1 == player2
+
+        # self.assertTrue(player1 == player2)
+        # self.assertTrue(player1.__eq__(player2))
+
 
 if __name__ == '__main__':
     unittest.main()
