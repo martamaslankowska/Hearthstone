@@ -18,7 +18,10 @@ class Player(object):
         self.punishment = 0
 
     def __str__(self):
-        return f'{self.name} - {self.hp} hp'
+        return f'{self.name} ({self.hp} hp)'
+
+    def __repr__(self):
+        return self.__str__()
 
     def __eq__(self, other):
         return isinstance(object, Player) and object.name == self.name and object.hp == self.hp
@@ -54,7 +57,7 @@ class Player(object):
         return cards_to_play, attacks
 
     def get_possible_attacks(self, opponent):
-        attacks_with_duplicates = self.get_attacks_from(copy.deepcopy(self.warriors), copy.deepcopy(opponent.warriors))
+        attacks_with_duplicates = self.get_attacks_from(copy.deepcopy(self.warriors), copy.deepcopy(opponent.warriors), opponent)
         return list(set([tuple(attacks_sequence) for attacks_sequence in attacks_with_duplicates]))
 
     def get_attacks_from(self, attacking_warriors, opponents_warriors, opponent):
@@ -84,8 +87,27 @@ class Player(object):
         return [x for x in subsets(self.hand)
                 if sum(card.mana for card in x) <= self.mana]
 
-    def attack_opponent(self, chosen_attack):
-        pass
+    def attack_opponent(self, chosen_attacks, opponent):  # method to change; coded temporary this way...
+        attacks = list(chosen_attacks)
+        for attack in attacks:
+            if isinstance(attack, Attack):
+                warrior = next((warrior for warrior in self.warriors if warrior.name == attack.source.name), None)
+                opponents_warrior = next((opp for opp in opponent.warriors if opp.name == attack.target.name), None)
+                if warrior and opponents_warrior:
+                    print(f'  attack: {warrior.name} --> {opponents_warrior.name}')
+                    if attack.source_dies():
+                        print(f'    - ally warrior {warrior.name} died...')
+                        self.warriors.remove(warrior)
+                    else:
+                        warrior.hp = attack.source_after_attack().hp
+                    if attack.target_dies():
+                        print(f'    - opponents warrior {opponents_warrior.name} died')
+                        opponent.warriors.remove(opponents_warrior)
+                    else:
+                        opponents_warrior.hp = attack.target_after_attack().hp
 
     def play_cards(self, chosen_cards_to_play):
-        pass
+        cards = list(chosen_cards_to_play)
+        print(f'  played cards: {cards}')
+        self.warriors = self.warriors + cards
+        self.hand = [x for x in self.hand if x not in cards]

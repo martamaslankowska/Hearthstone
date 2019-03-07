@@ -12,8 +12,9 @@ class RandomPlayer(Player):
         random.shuffle(possible_cards_to_play)
         random.shuffle(possible_attacks)
 
-        attack = possible_attacks[0]
-        self.attack_opponent(attack)
-        played_cards = possible_cards_to_play[0]
+        attacks = possible_attacks[0]
+        self.attack_opponent(attacks, opponent)
+        cards_to_play = possible_cards_to_play[0]
+        self.play_cards(cards_to_play)
 
 

@@ -6,8 +6,13 @@ class Card(object):
         self.attack = attack
         self.hp = health
 
+
+
     def __str__(self):
         return f'{self.name} ({self.mana}) - {self.attack} att | {self.hp} hp'
+
+    def __repr__(self):
+        return self.__str__()
 
     def __eq__(self, o: object):
         return isinstance(object, Card) and object.name == self.name and object.mana == self.mana \

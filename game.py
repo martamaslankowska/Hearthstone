@@ -7,10 +7,10 @@ import copy
 
 class Game(object):
 
-    def __init__(self, first_player_name, second_player_name):
+    def __init__(self, first_player, second_player):
         self.move = 0
-        self.active_player = Player(first_player_name)
-        self.inactive_player = Player(second_player_name)
+        self.active_player = first_player
+        self.inactive_player = second_player
 
     def prepare_game(self):
         self.active_player.hand = self.active_player.deck[:3]
@@ -24,9 +24,12 @@ class Game(object):
         self.prepare_game()
         while not self.finished():  # active player move
             self.move += 1
-            self.active_player.mana = min((self.move+1)/2, 10)
+            self.active_player.mana = int(min((self.move+1)/2, 10))
             self.active_player.hit()
-            print(f'\nTime for {self.active_player.name} to move... (mana: {self.active_player.mana})')
+            print(f'\nMOVE nr {self.move} - round {int((self.move+1)/2)}')
+            print(f'Time for {self.active_player.name} with {self.active_player.hp} hp to move... (mana: {self.active_player.mana})')
+            print(f'  HAND: {self.active_player.hand}')
+            print(f'  WARRIORS: {self.active_player.warriors}')
             cards, attacks = self.active_player.get_possible_moves(self.inactive_player)
             self.active_player.move(self.inactive_player, cards, attacks)
             self.swap_players()
@@ -34,7 +37,7 @@ class Game(object):
         return self.winner()
 
     def finished(self):
-        return self.active_player.hp == 0 or self.inactive_player.hp == 0
+        return self.active_player.hp <= 0 or self.inactive_player.hp <= 0
 
     def winner(self):
         assert(self.finished())
