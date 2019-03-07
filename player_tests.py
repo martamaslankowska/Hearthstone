@@ -53,15 +53,13 @@ class PlayerTests(unittest.TestCase):
         player1.prepare_deck()
         player2 = Player("Test Player")
         player2.prepare_deck()
+        self.assertTrue(player1 == player2)
+        self.assertTrue(player1.__eq__(player2))
 
-        print(player1)
-        print(player2)
-        eq = player1.__eq__(player2)
-        cmp = player1.__cmp__(player2)
-        grrr = player1 == player2
-
-        # self.assertTrue(player1 == player2)
-        # self.assertTrue(player1.__eq__(player2))
+    def test_card_equality(self):
+        card1 = Card('Arcanite Reaper', 5, 5, 2)
+        card2 = Card('Arcanite Reaper', 5, 5, 2)
+        self.assertTrue(card1 == card2)
 
 
 if __name__ == '__main__':

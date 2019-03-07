@@ -14,9 +14,9 @@ class Card(object):
     def __repr__(self):
         return self.__str__()
 
-    def __eq__(self, o: object):
-        return isinstance(object, Card) and object.name == self.name and object.mana == self.mana \
-               and object.attack == self.attack and object.hp == self.hp
+    def __eq__(self, o):
+        return isinstance(o, Card) and o.name == self.name and o.mana == self.mana \
+               and o.attack == self.attack and o.hp == self.hp
 
 
 CARDS = [Card('Arcanite Reaper', 5, 5, 2), Card('Bloodfen Raptor', 2, 3, 2), Card('Boulderfist Ogre', 6, 6, 7),

@@ -24,15 +24,7 @@ class Player(object):
         return self.__str__()
 
     def __eq__(self, other):
-        return isinstance(object, Player) and object.name == self.name and object.hp == self.hp
-
-    # def __eq__(self, o: object):
-    #     # return isinstance(object, Player) and object.name == self.name and object.hp == self.hp
-    #     return self.__dict__ == object.__dict__
-
-    def __cmp__(self, other):
         return isinstance(other, Player) and other.name == self.name and other.hp == self.hp
-
 
 
     def prepare_deck(self):
@@ -90,21 +82,23 @@ class Player(object):
     def attack_opponent(self, chosen_attacks, opponent):  # method to change; coded temporary this way...
         attacks = list(chosen_attacks)
         for attack in attacks:
-            if isinstance(attack, Attack):
-                warrior = next((warrior for warrior in self.warriors if warrior.name == attack.source.name), None)
-                opponents_warrior = next((opp for opp in opponent.warriors if opp.name == attack.target.name), None)
-                if warrior and opponents_warrior:
-                    print(f'  attack: {warrior.name} --> {opponents_warrior.name}')
-                    if attack.source_dies():
-                        print(f'    - ally warrior {warrior.name} died...')
-                        self.warriors.remove(warrior)
-                    else:
-                        warrior.hp = attack.source_after_attack().hp
-                    if attack.target_dies():
-                        print(f'    - opponents warrior {opponents_warrior.name} died')
-                        opponent.warriors.remove(opponents_warrior)
-                    else:
-                        opponents_warrior.hp = attack.target_after_attack().hp
+            print(f'  attack: {attack.source.name} --> {attack.target.name}')
+
+            if isinstance(attack, PlayerAttack):
+                opponent.hp -= attack.source.attack
+            else:
+                warrior = self.warriors[self.warriors.index(attack.source)]
+                opponents_warrior = opponent.warriors[opponent.warriors.index(attack.target)]
+                if attack.source_dies():
+                    print(f'    - ally warrior {warrior.name} died...')
+                    self.warriors.remove(warrior)
+                else:
+                    warrior.hp = attack.source_after_attack().hp
+                if attack.target_dies():
+                    print(f'    - opponents warrior {opponents_warrior.name} died')
+                    opponent.warriors.remove(opponents_warrior)
+                else:
+                    opponents_warrior.hp = attack.target_after_attack().hp
 
     def play_cards(self, chosen_cards_to_play):
         cards = list(chosen_cards_to_play)
