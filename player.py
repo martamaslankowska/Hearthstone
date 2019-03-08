@@ -42,7 +42,7 @@ class Player(object):
             self.punishment += 1
             self.hp -= self.punishment
 
-    def move(self, opponent, possible_cards_to_play, possible_attacks):
+    def select_moves(self, opponent, possible_cards_to_play, possible_attacks):
         raise NotImplementedError()
 
     def get_possible_moves(self, opponent):
@@ -62,7 +62,7 @@ class Player(object):
         for source_idx, source in enumerate(attacking_warriors):
             attacking_warriors_after_this_attack = attacking_warriors[:source_idx] + attacking_warriors[source_idx + 1:]
             tail_attacks = self.get_attacks_from(attacking_warriors_after_this_attack, opponents_warriors, opponent)
-            result += tail_attacks  # no attack
+            # result += tail_attacks  # no attack
             result += [[PlayerAttack(source, opponent)] + attack for attack in tail_attacks]
             for target_idx, target in enumerate(opponents_warriors):
                 this_attack = WarriorAttack(source, target)
@@ -107,3 +107,7 @@ class Player(object):
         print(f'  played cards: {cards}')
         self.warriors = self.warriors + cards
         self.hand = [x for x in self.hand if x not in cards]
+
+    def make_moves(self, opponent, chosen_cards, chosen_attacks):
+        self.attack_opponent(chosen_attacks, opponent)
+        self.play_cards(chosen_cards)
