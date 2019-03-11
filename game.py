@@ -13,10 +13,10 @@ class Game(object):
         self.inactive_player = second_player
 
     def prepare_game(self):
-        self.active_player.prepare_deck()
+        self.active_player.deck = self.active_player.prepare_deck()
         self.active_player.hand = self.active_player.deck[:3]
         self.active_player.deck = self.active_player.deck[3:]
-        self.inactive_player.prepare_deck()
+        self.inactive_player.deck = self.inactive_player.prepare_deck()
         self.inactive_player.hand = self.inactive_player.deck[:4]
         self.inactive_player.deck = self.inactive_player.deck[4:]
         print(f'{self.active_player} has 3 cards and {self.inactive_player} has 4 cards in hand.')
