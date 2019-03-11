@@ -7,7 +7,8 @@ class Card(object):
         self.hp = health
 
     def __str__(self):
-        return f'{self.name} ({self.mana}) {self.attack} att / {self.hp} hp'
+        # return f'{self.name} ({self.mana}) {self.attack} att / {self.hp} hp'
+        return u'{} ({}\u27E1) {}\u2694 {}\u2661'.format(self.name, self.mana, self.attack, self.hp)
 
     def __repr__(self):
         return self.__str__()

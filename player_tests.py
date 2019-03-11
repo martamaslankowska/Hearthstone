@@ -59,6 +59,18 @@ class PlayerTests(unittest.TestCase):
 
         self.assertTrue(True)
 
+    def test_get_possible_attacks_many(self):
+        player = Player("Test Player")
+        opponent_player = Player("Test Opponent")
+        attacking = [Card("Light's Justice", 1, 1, 4), Card('Murloc Raider', 1, 2, 1), Card("Light's Justice", 1, 1, 4),
+                     Card('Murloc Raider', 1, 2, 1), Card('Murloc Raider', 1, 2, 1), Card("Light's Justice", 1, 1, 4)]
+        opponents = [] #[Card('Oasis Snapjaw', 4, 2, 7)]#, Card('Bloodfen Raptor', 2, 3, 2), Card("Light's Justice", 1, 1, 4)]
+
+        attacks = player.get_attacks_from(attacking, opponents, opponent_player)
+        attacks_without_duplicates = list(set([tuple(attacks_sequence) for attacks_sequence in attacks]))
+
+        self.assertTrue(True)
+
 
     def test_check_equality(self):
         player1 = Player("Test Player")

@@ -47,6 +47,7 @@ class Player(object):
 
     def get_possible_moves(self, opponent):
         cards_to_play = self.get_possible_cards_to_play()
+        cards_to_play = self.filter_possible_cards_to_play(cards_to_play)
         attacks = self.get_possible_attacks(opponent)
         return cards_to_play, attacks
 
@@ -80,6 +81,9 @@ class Player(object):
 
         return [x for x in subsets(self.hand)
                 if sum(card.mana for card in x) <= self.mana]
+
+    def filter_possible_cards_to_play(self, possible_cards_to_play, max_cards=2):
+        return [cards for cards in possible_cards_to_play if len(cards) <= max_cards]
 
     def attack_opponent(self, chosen_attacks, opponent):  # method to change; coded temporary this way...
         attacks = list(chosen_attacks)

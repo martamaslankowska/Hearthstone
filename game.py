@@ -26,8 +26,10 @@ class Game(object):
             self.move += 1
             self.active_player.mana = int(min((self.move+1)/2, 10))
             self.active_player.hit()
+            if self.finished():  # players hp = 0 after hitting empty deck
+                break
             print(f'\nMOVE nr {self.move} - round {int((self.move+1)/2)}')
-            print(f'Time for {self.active_player.name} with {self.active_player.hp} hp to move... (mana: {self.active_player.mana})')
+            print(u'Time for {} with {}\u2661 to move... ({}\u27E1)'.format(self.active_player.name, self.active_player.hp, self.active_player.mana))
             print(f'  HAND: {self.active_player.hand}')
             print(f'  WARRIORS: {self.active_player.warriors}')
             cards, attacks = self.active_player.get_possible_moves(self.inactive_player)
