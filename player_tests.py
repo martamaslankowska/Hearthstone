@@ -1,5 +1,6 @@
 import unittest
 
+from bfs import BFState
 from card import Card
 from player import Player
 
@@ -84,6 +85,72 @@ class PlayerTests(unittest.TestCase):
         card1 = Card('Arcanite Reaper', 5, 5, 2)
         card2 = Card('Arcanite Reaper', 5, 5, 2)
         self.assertTrue(card1 == card2)
+
+
+    def test_bfs_state_neighbours(self):
+        warriors = [Card("Light's Justice", 1, 1, 4), Card('Murloc Raider', 1, 2, 1), Card('Core Hound', 7, 9, 5)]
+        opponent = Player("Opponent")
+        opponent.warriors = [Card('Oasis Snapjaw', 4, 2, 7), Card('Bloodfen Raptor', 2, 3, 2)]
+        root_state = BFState(warriors, opponent, [])
+
+        neighbours = root_state.get_all_neighbours()
+        self.assertTrue(len(neighbours) == 9)
+
+    def test_bfs_state_neighbours_of_child(self):
+        warriors = [Card("Light's Justice", 1, 1, 4), Card('Murloc Raider', 1, 2, 1), Card('Core Hound', 7, 9, 5)]
+        opponent = Player("Opponent")
+        opponent.warriors = [Card('Oasis Snapjaw', 4, 2, 7), Card('Bloodfen Raptor', 2, 3, 2)]
+        root_state = BFState(warriors, opponent, [])
+
+        neighbours = root_state.get_all_neighbours()
+        child_neighbours = neighbours[0].get_all_neighbours()
+        self.assertTrue(len(child_neighbours) == 6)
+
+    def test_bfs_state_equality(self):
+        warriors = [Card("Light's Justice", 1, 1, 4), Card('Murloc Raider', 1, 2, 1), Card('Core Hound', 7, 9, 5)]
+        opponent = Player("Opponent")
+        opponent.warriors = [Card('Oasis Snapjaw', 4, 2, 7), Card('Bloodfen Raptor', 2, 3, 2)]
+        root_state = BFState(warriors, opponent, [])
+
+        neighbours = root_state.get_all_neighbours()
+        child_neighbours = neighbours[0].get_all_neighbours()
+        child1, child2 = child_neighbours[0], child_neighbours[3]
+        child1_neighbour = child1.get_all_neighbours()[0]
+        child2_neighbour = child2.get_all_neighbours()[0]
+
+        self.assertTrue(child1_neighbour == child2_neighbour)
+
+    def test_bfs_unique_states(self):
+        warriors = [Card("Light's Justice", 1, 1, 4), Card('Murloc Raider', 1, 2, 1), Card('Core Hound', 7, 9, 5)]
+        opponent = Player("Opponent")
+        opponent.warriors = [Card('Oasis Snapjaw', 4, 2, 7), Card('Bloodfen Raptor', 2, 3, 2)]
+        root_state = BFState(warriors, opponent, [])
+
+        all_neighbours = []
+
+        for a in root_state.get_all_neighbours():
+            for b in a.get_all_neighbours():
+                for c in b.get_all_neighbours():
+                    all_neighbours.append(c)
+
+        unique_neighbours = set(all_neighbours)
+        self.assertTrue(True)
+
+    def test_bfs_unique_states_smaller(self):
+        warriors = [Card("Light's Justice", 1, 2, 3), Card('Murloc Raider', 1, 6, 6)]  #, Card('Core Hound', 7, 9, 5)]
+        opponent = Player("Opponent")
+        opponent.warriors = [Card('Oasis Snapjaw', 4, 5, 7)]  #, Card('Bloodfen Raptor', 2, 3, 2)]
+        root_state = BFState(warriors, [], opponent, [])
+
+        all_neighbours = []
+
+        for a in root_state.get_all_neighbours():
+            for b in a.get_all_neighbours():
+            #     for c in b.get_all_neighbours():
+                all_neighbours.append(b)
+
+        unique_neighbours = set(all_neighbours)
+        self.assertTrue(True)
 
 
 if __name__ == '__main__':

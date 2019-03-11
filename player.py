@@ -8,11 +8,11 @@ from attack import Attack, WarriorAttack, PlayerAttack
 
 class Player(object):
 
-    def __init__(self, name):
+    def __init__(self, name, hp=20):
         self.name = name
-        self.hp = 20
+        self.hp = hp
         self.mana = 0
-        self.deck = self.prepare_deck()
+        self.deck = []
         self.hand = []
         self.warriors = []
         self.punishment = 0
@@ -72,6 +72,10 @@ class Player(object):
                 all_other_attacks = self.get_attacks_from(attacking_warriors_after_this_attack, opponents_warriors_after_this_attack, opponent)
                 result += [[this_attack] + other_attacks for other_attacks in all_other_attacks]
         return result
+
+    def get_attacks_bfs(self):
+        visited, queue = set(), []
+        pass
 
     def get_possible_cards_to_play(self):
         def subsets(iterable):
