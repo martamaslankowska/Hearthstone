@@ -7,12 +7,11 @@ class State(object):
         self.depth = 0
         self.rating=0
         self.parent=parent
-        self.cards_played=card_played
-        self.attacks_performed=attack_performed
         self.children=[]
         self.player_state=copy.deepcopy(player)
         self.oponent_state=copy.deepcopy(oponent)
 
     #TODO implement
+    #generates all posibble childiren states without duplicates
     def generate_children(self,attacks,cards):
         self.children= []

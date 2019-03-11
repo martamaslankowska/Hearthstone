@@ -27,5 +27,25 @@ class MCTSPlayer(Player):
         attacks = child.attack_performed
         return cards_to_play, attacks
 
+    # performs selection
     def selectChild(self,state):
         return state.children[0]
+
+    def ucts_search(self):
+        pass
+
+    def tree_policy(self):
+        pass
+
+    def expand(self):
+        pass
+
+    def best_child(self):
+        pass
+
+    def default_policy(self):
+        pass
+
+    def backup(self):
+        pass
+
