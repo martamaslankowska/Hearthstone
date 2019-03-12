@@ -1,7 +1,6 @@
 import copy
 
 from attack import PlayerAttack, WarriorAttack
-from player import Player
 
 
 class BFState(object):

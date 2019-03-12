@@ -1,3 +1,4 @@
+import time
 import unittest
 
 from bfs import BFState
@@ -137,19 +138,41 @@ class PlayerTests(unittest.TestCase):
         self.assertTrue(True)
 
     def test_bfs_unique_states_smaller(self):
-        warriors = [Card("Light's Justice", 1, 2, 3), Card('Murloc Raider', 1, 6, 6)]  #, Card('Core Hound', 7, 9, 5)]
+        warriors = [Card("Light's Justice", 1, 2, 3), Card('Murloc Raider', 1, 6, 6), Card('Core Hound', 7, 9, 5)]
         opponent = Player("Opponent")
-        opponent.warriors = [Card('Oasis Snapjaw', 4, 5, 7)]  #, Card('Bloodfen Raptor', 2, 3, 2)]
+        opponent.warriors = []#[Card('Oasis Snapjaw', 4, 5, 7)]  #, Card('Bloodfen Raptor', 2, 3, 2)]
         root_state = BFState(warriors, [], opponent, [])
 
         all_neighbours = []
 
         for a in root_state.get_all_neighbours():
             for b in a.get_all_neighbours():
-            #     for c in b.get_all_neighbours():
-                all_neighbours.append(b)
+                for c in b.get_all_neighbours():
+                    all_neighbours.append(c)
 
         unique_neighbours = set(all_neighbours)
+        self.assertTrue(True)
+
+    def test_get_attacks_bfs(self):
+        player = Player("Test Player")
+        opponent_player = Player("Test Opponent")
+
+        player.warriors = [Card("Light's Justice", 1, 2, 3), Card('Murloc Raider', 1, 6, 6), Card('Core Hound', 7, 9, 5), Card('Murloc Raider', 1, 6, 6), Card('Core Hound', 7, 9, 5), Card('Core Hound', 7, 9, 5)]
+        opponent_player.warriors = [Card('Oasis Snapjaw', 4, 5, 7), Card('Bloodfen Raptor', 2, 3, 2)]
+
+        # BFS
+        start_bfs = time.time()
+        possible_attacks = player.get_possible_attacks_bfs(opponent_player)
+        end_bfs = time.time()
+
+        # old way - many many of permutations...
+        attacks = player.get_attacks_from(player.warriors, opponent_player.warriors, opponent_player)
+        attacks_without_duplicates = list(set([tuple(attacks_sequence) for attacks_sequence in attacks]))
+        end_old_way = time.time()
+
+        # print(f'BFS: {end_bfs - start_bfs} sec and {len(possible_attacks)} permutations'
+        #       f'\nOld way: {end_old_way - end_bfs} and {len(attacks)} permutations')
+
         self.assertTrue(True)
 
 

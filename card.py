@@ -1,10 +1,14 @@
 class Card(object):
 
+    card_counter = 0
+
     def __init__(self, name, mana, attack, health):
+        Card.card_counter += 1
         self.name = name
         self.mana = mana
         self.attack = attack
         self.hp = health
+        self.no = Card.card_counter
 
     def __str__(self):
         # return f'{self.name} ({self.mana}) {self.attack} att / {self.hp} hp'
@@ -15,10 +19,10 @@ class Card(object):
 
     def __eq__(self, o):
         return isinstance(o, Card) and o.name == self.name and o.mana == self.mana \
-               and o.attack == self.attack and o.hp == self.hp
+               and o.attack == self.attack and o.hp == self.hp and o.no == self.no
 
     def __hash__(self):
-        return hash((self.name, self.mana, self.attack, self.hp))
+        return hash((self.name, self.mana, self.attack, self.hp, self.no))
 
 
 CARDS = [Card('Arcanite Reaper', 5, 5, 2), Card('Bloodfen Raptor', 2, 3, 2), Card('Boulderfist Ogre', 6, 6, 7),

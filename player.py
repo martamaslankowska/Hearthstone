@@ -4,6 +4,7 @@ from itertools import chain, combinations
 
 import card
 from attack import Attack, WarriorAttack, PlayerAttack
+from bfs import BFState
 
 
 class Player(object):
@@ -73,9 +74,22 @@ class Player(object):
                 result += [[this_attack] + other_attacks for other_attacks in all_other_attacks]
         return result
 
-    def get_attacks_bfs(self):
-        visited, queue = set(), []
-        pass
+    def get_possible_attacks_bfs(self, opponent):
+        queue = [BFState(self.warriors, [], opponent, [])]
+        set_queue = set(queue)
+        possible_attacks = []
+
+        while len(queue) > 0:
+            state = queue.pop(0)
+            for neighbour in state.get_all_neighbours():
+                if neighbour not in set_queue:
+                    set_queue.add(neighbour)
+                    if len(neighbour.warriors_active) > 0:
+                        queue.append(neighbour)  # to visit
+                    else:
+                        possible_attacks += [neighbour.previous_attacks]  # last tree level
+
+        return possible_attacks
 
     def get_possible_cards_to_play(self):
         def subsets(iterable):
