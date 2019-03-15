@@ -49,7 +49,8 @@ class Player(object):
     def get_possible_moves(self, opponent):
         cards_to_play = self.get_possible_cards_to_play()
         cards_to_play = self.filter_possible_cards_to_play(cards_to_play)
-        attacks = self.get_possible_attacks(opponent)
+        # attacks = self.get_possible_attacks(opponent)
+        attacks = self.get_possible_attacks_bfs(opponent)
         return cards_to_play, attacks
 
     def get_possible_attacks(self, opponent):
@@ -131,5 +132,6 @@ class Player(object):
         self.hand = [x for x in self.hand if x not in cards]
 
     def make_moves(self, opponent, chosen_cards, chosen_attacks):
-        self.attack_opponent(chosen_attacks, opponent)
+        if chosen_attacks is not None:
+            self.attack_opponent(chosen_attacks, opponent)
         self.play_cards(chosen_cards)

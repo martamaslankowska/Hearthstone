@@ -11,7 +11,10 @@ class RandomPlayer(Player):
 
     def select_moves(self, opponent, possible_cards_to_play, possible_attacks):
         cards_to_play = random.choice(possible_cards_to_play)
-        attacks = random.choice(possible_attacks)
+        if len(possible_attacks) > 0:
+            attacks = random.choice(possible_attacks)
+        else:
+            attacks = None
         return cards_to_play, attacks
 
 
