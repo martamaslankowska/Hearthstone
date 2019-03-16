@@ -1,5 +1,5 @@
 import random
-
+import copy
 from attack import PlayerAttack, WarriorAttack
 from player import Player
 
@@ -8,6 +8,19 @@ class RandomPlayer(Player):
 
     def __init__(self, name):
         super().__init__(name)
+
+    # @staticmethod
+    # def copy(player):
+    #     copied=copy.deepcopy(player)
+    #     random_player= RandomPlayer(copied.name)
+    #     random_player.name = copied.name
+    #     random_player.hp = copied.hp
+    #     random_player.mana = copied.mana
+    #     random_player.deck = copied.deck
+    #     random_player.hand = copied.hand
+    #     random_player.warriors = copied.warriors
+    #     random_player.punishment = copied.punishment
+    #     return random_player
 
     def select_moves(self, opponent, possible_cards_to_play, possible_attacks):
         cards_to_play = random.choice(possible_cards_to_play)
