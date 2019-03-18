@@ -22,6 +22,31 @@ class RandomPlayer(Player):
     #     random_player.punishment = copied.punishment
     #     return random_player
 
+    def get_possible_moves(self, opponent):
+        cards_to_play = self.get_possible_cards_to_play()
+        attacks = self.get_random_attack_configuration(opponent)
+        return cards_to_play, attacks
+
+    def get_random_attack_configuration(self, opponent):
+        warriors = copy.deepcopy(self.warriors) or []
+        random.shuffle(warriors)
+        opponents_player = copy.deepcopy(opponent)
+        opponents_warriors = opponents_player.warriors
+        attacks = []
+        for warrior in warriors:
+            if random.randint(0, len(opponents_warriors)) == 0:
+                attack = PlayerAttack(warrior, opponents_player)
+                opponents_player.hp -= warrior.attack
+            else:
+                attacked_opponent = random.choice(opponents_warriors)
+                attack = WarriorAttack(warrior, copy.deepcopy(attacked_opponent))
+                if attack.target_dies():
+                    opponents_warriors = [war for war in opponents_warriors if war != attacked_opponent]
+                else:
+                    attacked_opponent.hp -= warrior.attack
+            attacks.append(attack)
+        return [attacks]
+
     def select_moves(self, opponent, possible_cards_to_play, possible_attacks):
         cards_to_play = random.choice(possible_cards_to_play)
         if len(possible_attacks) > 0:

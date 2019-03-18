@@ -87,7 +87,7 @@ class Node(object):
         rootnode = Node(state=root_state)
 
         for i in range(iterations_count):
-            print(f'  MCTS ITERATION {i}')
+            print(f'MCTS ITERATION {i}')
             node = rootnode
             state=node.state
             # state = root_state.clone()

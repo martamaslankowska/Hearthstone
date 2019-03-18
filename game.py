@@ -23,10 +23,11 @@ class Game(object):
         if self.verbose:
             print(f'{self.active_player} has 3 cards and {self.inactive_player} has 4 cards in hand.')
 
-    def game_play(self):
+    def game_play(self, mcts=False):
         if self.verbose :
             print(f'{self.active_player.name} starts the game.')
-        self.prepare_game()
+        if not mcts:
+            self.prepare_game()
         while not self.finished():  # active player move
             self.move += 1
             self.active_player.mana = int(min((self.move+1)/2, 10))

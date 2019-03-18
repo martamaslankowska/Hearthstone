@@ -15,5 +15,5 @@ class MCTSPlayer(Player):
 
     def select_moves(self, opponent, possible_cards_to_play, possible_attacks):
         root = State('0', self, opponent)
-        attacks, cards = Node.MCTS(root, 10)
+        attacks, cards = Node.MCTS(root, 50)
         return cards, attacks

@@ -9,6 +9,9 @@ if __name__ == '__main__':
 
     player1 = RandomPlayer("Random player")
     player2 = MCTSPlayer("MCTS player")
+    # player1 = AggressivePlayer("Aggressive player")
+    # player2 = ControllingPlayer("Controlling player")
+
     # player1.verbose=True
     # player2.verbose=True
 

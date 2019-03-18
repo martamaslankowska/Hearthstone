@@ -104,7 +104,7 @@ class Player(object):
     def filter_possible_cards_to_play(self, possible_cards_to_play, max_cards=2):
         return [cards for cards in possible_cards_to_play if len(cards) <= max_cards]
 
-    def attack_opponent(self, chosen_attacks, opponent):  # method to change; coded temporary this way...
+    def attack_opponent(self, chosen_attacks, opponent):
         attacks = list(chosen_attacks)
         for attack in attacks:
             print(f'  attack: {attack.source.name} --> {attack.target.name}')
