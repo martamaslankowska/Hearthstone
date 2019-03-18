@@ -7,12 +7,12 @@ import random
 if __name__ == '__main__':
     # random.seed(17)
 
-    player1 = RandomPlayer("Player 1")
-    player2 = MCTSPlayer("Player 2")
+    player1 = RandomPlayer("Random player")
+    player2 = MCTSPlayer("MCTS player")
     # player1.verbose=True
     # player2.verbose=True
 
-    game = Game(player1, player2,verbose=True)
+    game = Game(player1, player2, verbose=True)
     winner = game.game_play()
 
 

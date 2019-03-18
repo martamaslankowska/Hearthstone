@@ -111,6 +111,8 @@ class Player(object):
 
             if isinstance(attack, PlayerAttack):
                 opponent.hp -= attack.source.attack
+                # if opponent.hp <= 0:
+                #     return
             else:
                 warrior = self.warriors[self.warriors.index(attack.source)]
                 opponents_warrior = opponent.warriors[opponent.warriors.index(attack.target)]

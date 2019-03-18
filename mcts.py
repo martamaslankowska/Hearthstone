@@ -11,7 +11,7 @@ import itertools
 class State(object):
 
     def __init__(self, id, player, opponent, attack_performed=None, card_played=None):
-        self.id = id;
+        self.id = id
         self.cards_played = card_played  # te które doprowadziły do stanu
         self.attacks_performed = attack_performed  # te które doprowadziły do stanu
         self.player = player  # stan określa stan gracza
@@ -23,14 +23,14 @@ class State(object):
 
     # wszystkie podstany
     def generate_substates(self):
-        ident = 0;
+        ident = 0
         possible_cards, possible_attacks = self.player.get_possible_moves(self.opponent)
         if possible_attacks==[]:
             possible_attacks.append([])
         combinations=list(itertools.product(possible_cards, possible_attacks))
         substates_collection=[]
         for elems in combinations:
-            print(elems)
+            print(' combination:', elems)
             new_player = copy.deepcopy(self.player)
             new_opponent = copy.deepcopy(self.opponent)
             cards=elems[0]
@@ -38,7 +38,7 @@ class State(object):
             new_player.make_moves(new_opponent, cards, attack)
             substate = State(self.id + '.' + str(ident), new_opponent, new_player, attack, cards)
             substates_collection.append(substate)
-            ident += 1;
+            ident += 1
         return substates_collection
 
     # tu można bedzie zmieniać heurystyki playoutów
@@ -53,8 +53,10 @@ class State(object):
 
 
 # określa węzeł drzewa gry - na nim wykonywane są operacje zwiazane z budowaniem i przechodzeniem drzewa
-#lepiej rozdzielić od stanu
+# lepiej rozdzielić od stanu
 class Node(object):
+
+    nr_of_playouts = 5  # number of playouts played every time
 
     def __init__(self, parent=None, state=None):
         self.parent = parent
@@ -75,9 +77,8 @@ class Node(object):
         self.childNodes.append(n)
         return n
 
-    #result to 0 lub 1 w zależności od tego kto wygrał ( założenie, że na iterację 1 playout)
-    def update_params(self, result):
-        self.playouts += 1
+    def update_params(self, nr_of_playouts, result):
+        self.playouts += nr_of_playouts
         self.wins += result
 
     @staticmethod
@@ -86,7 +87,7 @@ class Node(object):
         rootnode = Node(state=root_state)
 
         for i in range(iterations_count):
-            print(f'ITERATION {i}')
+            print(f'  MCTS ITERATION {i}')
             node = rootnode
             state=node.state
             # state = root_state.clone()
@@ -100,18 +101,21 @@ class Node(object):
 
             # Ekspansja
             if node.untriedSubstates != []:
-                chosen_substate= random.choice(node.untriedSubstates)
-                state=chosen_substate
+                chosen_substate = random.choice(node.untriedSubstates)
+                state = chosen_substate
                 node = node.append_child(state)
             #Teraz jestem w liściu
 
             #Playout
-            playout_winner=state.simulate_playout()
+            playout_winns = 0
+            for i in range(node.nr_of_playouts):
+                playout_winner = state.simulate_playout()
+                playout_winns += 1 if playout_winner == node.state.player.name else 0  #1 dla zwycięzcy 0 dla przegranego
+            print(f'    playout stats: {playout_winns}/{node.nr_of_playouts}')
 
             # Backpropagation
             while node != None:  # aż do korzenia
-                result=1 if playout_winner==node.state.player.name else 0 #1 dla zwycięzcy 0 dla przegranego
-                node.update_params(result)
+                node.update_params(node.nr_of_playouts, playout_winns)
                 node = node.parent
 
         chosen_root_subnode=sorted(rootnode.childNodes, key=lambda c: c.wins/c.playouts)[-1]
